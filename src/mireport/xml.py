@@ -155,6 +155,7 @@ class QNameMaker:
         self._nsManager = nsManager
 
     def _getAndValidateParts(self, /, qname: str) -> _QNameTuple:
+        #print(f"\nValidating QName: {qname}")
         if not (qname and len(parts := qname.split(":", 1)) == 2):
             raise BrokenQNameException(
                 f'QName does not look format ("prefix:part") valid: "{qname}"'
@@ -188,7 +189,9 @@ class QNameMaker:
             return False
 
     def fromString(self, /, qname: str) -> QName:
+        #print(f"\nParsing QName from string: {qname}")
         q = self._getAndValidateParts(qname)
+        #print(f"Parsed QName: prefix={q.prefix}, localName={q.localName}, namespace={q.namespace}")
         return QName(q)
 
     def fromNamespaceAndLocalName(self, /, namespace: str, localName: str) -> QName:

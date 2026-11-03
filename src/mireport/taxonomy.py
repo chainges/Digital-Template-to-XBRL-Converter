@@ -808,6 +808,10 @@ class Taxonomy:
         by_qname: bool = False,
         only_reportable: bool = True,
     ) -> Optional[Concept]:
+
+        #print("\nIn resolveConcept\n")
+
+        #print(f"Input text: {text} | by_label: {by_label} | by_name: {by_name} | by_qname: {by_qname} | only_reportable: {only_reportable} \n")
         """Resolve a string to a Concept using one or more strategies.
 
         Strategies are tried in specificity order: qname → name → label.
@@ -823,16 +827,20 @@ class Taxonomy:
                 "resolveConcept requires at least one strategy to be enabled"
             )
         if by_qname:
+            #print("Attempting to resolve by QName...")
             try:
                 concept = self.getConcept(text)
+                #print(f"Found concept by QName: {concept.qname}")
                 if not only_reportable or concept.isReportable:
                     return concept
             except Exception:
+                #print(f"Failed to resolve by QName: {text}")
                 pass  # not a valid QName format or concept not present
 
         candidates: set[Concept] = set()
 
         if by_name:
+            #print("Attempting to resolve by name...")
             candidates.update(self._lookupConceptsByName.get(text, []))
 
         if by_label:
@@ -857,8 +865,10 @@ class Taxonomy:
             candidates.update(possible)
 
         if only_reportable:
+            #print("Filtering only reportable concepts...")
             candidates = {c for c in candidates if c.isReportable}
-
+            #print(f"Candidates after filtering: {[c.qname for c in candidates]}")
+        #print(f"Total candidates found: {len(candidates)}\n\n")
         match len(candidates):
             case 0:
                 return None
@@ -1077,6 +1087,7 @@ def getTaxonomy(entryPoint: str) -> Taxonomy:
         raise UnknownTaxonomyException(
             f'No knowledge of taxonomy entry point "{entryPoint}"'
         )
+    print(f"Loaded taxonomy entry point: {entryPoint}: {taxonomy}")
     return taxonomy
 
 

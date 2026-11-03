@@ -1,0 +1,607 @@
+{
+	"confidentialAreas": [
+
+		
+	],
+	"formEnvironmental": {
+		"biodiversity": {
+			"hasSensitiveBiodiversityAreas": true,
+			"protectedSpeciesCount": "",
+			"redListedSpeciesCount": "",
+			"reportingYear": "2025",
+			"sites": [
+				{
+					"areaSquareMeters": 6770,
+					"isInSensitiveBiodiversityArea": true,
+					"isNearSensitiveBiodiversityArea": true,
+					"propertyId": "97cb4130-7aed-467d-afce-38875955f86b",
+					"siteLocation": "Norway Oslo 25 Karl Johans gate"
+				}
+			],
+			"totalLandUsedSquareMeters": 11122,
+			"totalNatureOrientedAreaOffSiteSquareMeters": 222,
+			"totalNatureOrientedAreaOnSiteSquareMeters": 1222,
+			"totalSealedAreaSquareMeters": 6777
+		},
+		"climateRiskAnalysis": {
+			"climateAdaptationActions": true,
+			"climateRiskDescription": "Climate change may affect the business through both physical and transition risks. Physical risks include disruptions caused by extreme weather events, rising temperatures, flooding, or other climate-related hazards that could impact operations, supply chains, infrastructure, and employee safety. Transition risks may arise from evolving environmental regulations, carbon pricing mechanisms, changing customer preferences, technological advancements, and increased stakeholder expectations for sustainability. These factors could lead to higher operating costs, compliance requirements, and the need for investments in low-carbon technologies and more resilient business practices. The company continues to monitor climate-related risks and integrate appropriate mitigation and adaptation measures into its business planning to strengthen long-term resilience.",
+			"exposureAndSensitivityAssessment": "testing testing",
+			"hasIdentifiedClimateRelatedHazardious": true,
+			"isC4Confidential": false,
+			"potentialAdverseEffectsAndRiskRating": "gfgfg",
+			"reportingYear": "2025",
+			"timeHorizonsIdentified": "Test Test TEst"
+		},
+		"energyEmissions": {
+			"category1": 0,
+			"category10": 0,
+			"category11": 0,
+			"category12": 0,
+			"category13": 0,
+			"category14": 0,
+			"category15": 0,
+			"category2": 0,
+			"category3": 1.07,
+			"category4": 0.11,
+			"category5": 0,
+			"category6": 0,
+			"category7": 0,
+			"category8": 2.38,
+			"category9": 0,
+			"climateDataCollectionMethod": "Testing hh nndjj jsnjkxnxk jkzsxjk",
+			"confidentialAreas": ["vsme:B3EstimatedGreenhouseGasEmissionsConsideringTheGHGProtocolVersion2004InTCO2eMember"],
+			"dataUncertainty": "TEsting dbcjhbhc hhh hhh hh",
+			"emissionsIntensity": 43.3,
+			"isB3Confidential": false,
+			"mobileCombustion": 0,
+			"nonRenewableElectricity": 145978,
+			"otherEnergySources": 0,
+			"renewableElectricity": 18197,
+			"renewableFuels": 0,
+			"reportingYear": "2025",
+			"scope1Emissions": 0.25,
+			"scope2EmissionsLocationBased": 0,
+			"scope2EmissionsMarketBased": 345.18,
+			"selfGeneratedEnergy": 0,
+			"stationaryCombustion": 1096,
+			"totalEnergyConsumption": 201266,
+			"totalScope3Emissions": 3.56
+		},
+		"pollution": {
+			"pollutants": [
+				{
+					"amountOfEmissionToAir": 1234,
+					"amountOfEmissionToSoil": 345,
+					"amountOfEmissionToWater": 123,
+					"id": "599a068f-e8ab-44e4-8c19-a50809f195ad",
+					"pollutantCode": "Anthracene",
+					"unitCode": "kg"
+				},
+				{
+					"amountOfEmissionToAir": 10,
+					"amountOfEmissionToSoil": 34,
+					"amountOfEmissionToWater": 12,
+					"id": "1eb26784-436c-4ee9-a5de-fb93cda10419",
+					"pollutantCode": "Aldrin",
+					"unitCode": "t"
+				}
+			],
+			"publiclyAvailableDisclosure": false,
+			"reportingPollution": true,
+			"reportingYear": "2025",
+			"urlOrLinkToPubliclyAvailableDisclosure": ""
+		},
+		"resourceUseCircularEconomy": {
+			"annualMassFlows": [
+				{
+					"id": "b8dbc025-eef5-464c-887a-c16c4fa6b620",
+					"materialType": "plastic",
+					"unit": "tonn",
+					"volume": 1233
+				},
+				{
+					"id": "de9b2aa8-7898-4667-b21f-193a01b637a9",
+					"materialType": "wood",
+					"unit": "kg",
+					"volume": 333
+				}
+			],
+			"applyCircularEconomyPrinciples": true,
+			"circularEconomyDescription": "xhjsghjsdhjx bsxvhxhs vxhjsdhjx hsxs hbsjxsj sxjsh hjsxsg  jsxsgh jsxjs hsxhjsgh hsjhxsh ",
+			"confidentialAreas": ["vsme:B7WasteGeneratedMember"],
+			"energyRecovery": 0,
+			"hazardousWaste": 0,
+			"isB7Confidential": false,
+			"landfill": 0,
+			"onlyHouseholdWaste": false,
+			"recycledMaterials": [],
+			"recyclingRate": 0,
+			"reportingYear": "2025",
+			"significantMaterialFlows": true,
+			"totalWaste": 0,
+			"wasteInformation": [
+				{
+					"hazardous": false,
+					"id": "20 03 01",
+					"name": "Mixed municipal waste",
+					"total": 510,
+					"unit": "tonn",
+					"axis": "waste:W-200301-Non-Hazardous-MixedMunicipalWasteMember",
+					"wasteDirectedToDisposal": 60,
+					"wasteDivertedToRecycle": 450
+				},
+				{
+					"hazardous": false,
+					"id": "02 01 01",
+					"name": "Sludges from washing and cleaning",
+					"total": 7026,
+					"axis":"waste:W-020101-Non-Hazardous-SludgesFromWashingAndCleaningMember",
+					"unit": "kg",
+					"wasteDirectedToDisposal": 366,
+					"wasteDivertedToRecycle": 6660
+				},
+				{
+					"hazardous": false,
+					"id": "02 01 02",
+					"name": "Animal-tissue waste",
+					"total": 440,
+					"axis":"waste:W-020102-Non-Hazardous-Animal-TissueWasteMember",
+					"unit": "m³",
+					"wasteDirectedToDisposal": 220,
+					"wasteDivertedToRecycle": 220
+				},
+				{
+					"hazardous": true,
+					"id": "03 02 01",
+					"name": "Non-halogenated organic wood preservatives",
+					"total": 1132,
+					"axis":"waste:W-030201-Hazardous-Non-HalogenatedOrganicWoodPreservativesMember",
+					"unit": "kg",
+					"wasteDirectedToDisposal": 1110,
+					"wasteDivertedToRecycle": 22
+				},
+				{
+					"hazardous": true,
+					"id": "03 02 02",
+					"name": "Organochlorinated wood preservatives",
+					"total": 4551,
+					"axis":"waste:W-030202-Hazardous-OrganochlorinatedWoodPreservativesMember",
+					"unit": "tonn",
+					"wasteDirectedToDisposal": 111,
+					"wasteDivertedToRecycle": 4440
+				},
+				{
+					"hazardous": true,
+					"id": "03 02 03",
+					"name": "Organometallic wood preservatives",
+					"total": 8310,
+					"axis":"waste:W-030203-Hazardous-OrganometallicWoodPreservativesMember",
+					"unit": "m³",
+					"wasteDirectedToDisposal": 560,
+					"wasteDivertedToRecycle": 7750
+				}
+			]
+		},
+		"scope3Emissions": {
+			"category1": 0,
+			"category10": 0,
+			"category11": 0,
+			"category12": 0,
+			"category13": 0,
+			"category14": 0,
+			"category15": 0,
+			"category2": 0,
+			"category3": 1.07,
+			"category4": 0.11,
+			"category5": 0,
+			"category6": 0,
+			"category7": 0,
+			"category8": 2.38,
+			"category9": 0,
+			"reportingYear": "2025",
+			"totalScope3Emissions": 3.56
+		},
+		"waterManagement": {
+			"reportingYear": "2025",
+			"waterConsumption": 20000,
+			"waterDischarge": 50000,
+			"waterWithdrawal": 70000,
+			"waterWithdrawalStress": 10000
+		}
+	},
+	"formGeneral": {
+		"basicModule": {
+			"containsPreviousPeriodDisclosures": true,
+			"linkOfPreviousReport": "hjjjkjkklklkl",
+			"moduleScope": "vsme:OptionBBasicModuleAndComprehensiveModuleMember",
+			"reportingYear": "2025",
+			"sectionsThatHasNotChanged": [
+				"vsme:B5-BiodiversityMember",
+				"vsme:B6-WaterMember",
+				"vsme:B7-ResourceUseCircularEconomyAndWasteManagementMember"
+			]
+		},
+		"businessModel": {
+			"businessRelationships": "The enterprise maintains strong relationships with a network of trusted suppliers, technology partners, and service providers to ensure the reliable delivery of its products and services. Its primary customers include businesses, government organizations, and institutional clients across various industries. Solutions are delivered through direct sales, strategic partnerships, and digital distribution channels. The company works closely with customers to understand their needs and provide tailored, long-term solutions. These collaborative relationships help ensure quality, innovation, and sustainable business growth.",
+			"markets": "The enterprise primarily operates in the business-to-business (B2B) market, providing products and services to corporate clients across multiple industries. Its operations serve customers in both domestic and international markets, with a strong presence in Europe and selected global regions. The company delivers its solutions through direct client engagement and long-term business partnerships. In addition to serving private sector organizations, it also supports public sector and nonprofit entities where applicable. The enterprise continues to expand its market reach by leveraging digital platforms and strategic collaborations.",
+			"productsAndServices": "The enterprise provides software development, IT consulting, and digital transformation services to clients across multiple industries. Its solutions include cloud-based applications, business process automation, and data analytics platforms. The company also offers sustainability reporting tools that help organizations monitor environmental performance and comply with ESG requirements. By adopting energy-efficient cloud infrastructure and promoting paperless workflows, the enterprise supports environmentally responsible business operations. Continuous innovation ensures that its products deliver value while contributing to long-term sustainability goals.",
+			"reportingYear": "2025",
+			"sustainabilityStrategy": "The enterprise integrates sustainability into its business strategy by promoting energy efficiency, responsible resource management, and environmentally conscious decision-making. It prioritizes reducing greenhouse gas emissions, minimizing waste, and increasing the use of digital and low-impact solutions. The company also focuses on ethical business practices, employee well-being, and responsible supply chain management. Innovation and continuous improvement are encouraged to develop products and services that support long-term environmental and social value. Regular monitoring of sustainability performance helps guide strategic decisions and ensure ongoing progress toward sustainability objectives."
+		},
+		"companyInfo": {
+			"EmployeeCountingMethodology": "vsme:AtTheEndOfTheReportingPeriodMember",
+			"TypeOfNumberOfEmployees": "vsme:HeadcountMember",
+			"balanceSheetTotal": 4000000,
+			"certifications": [
+				{
+					"assessment": "97/100",
+					"date": "2026-09-15T19:00:00.000Z",
+					"id": "73ef2c28-8a2d-46ea-9568-b01f1c2bf960",
+					"issuer": "SGS",
+					"name": "ISO 14001:2015 Environmental Management System Certification"
+				}
+			],
+			"confidentialAreas": [
+				"vsme:B1DisclosureOfSustainabilityRelatedCertificationSOrLabelSMember",
+				"vsme:B1ListOfSubsidiariesMember"
+			],
+			"contactPersonEmail": "ua63510@gmail.com",
+			"contactPersonName": "Usama Ali",
+			"country": "NO",
+			"employees": 10,
+			"isB1Confidential": false,
+			"naceCode": "86.230",
+			"underTakingLegalForm": "vsme:OtherUndertakingsLegalFormMember",
+			"otherUndertakingsLegalForm": "Test Company",
+			"organizationName": "SCOPE GROUP AS",
+			"organizationNumber": "925446955",
+			"properties": [
+				{
+					"city": "Princeton",
+					"country": "United States",
+					"countryCode": "US",
+					"formattedAddress": "321 Scope St, Princeton, WV 24740, USA",
+					"id": "9b8c0c05-0ea0-47b4-97fc-a5fa3235ba9f",
+					"lat": 37.358885,
+					"lng": -81.0828483,
+					"placeId": "EiYzMjEgU2NvcGUgU3QsIFByaW5jZXRvbiwgV1YgMjQ3NDAsIFVTQSIxEi8KFAoSCTcRh_OOa06IEZAb88CxHxRwEMECKhQKEgnzVI5gjmtOiBHnBZwyF3hMSw",
+					"postalCode": "24740",
+					"streetAddress": "321 Scope Street"
+				}
+			],
+			"reportType": true,
+			"reportingYear": "2025",
+			"revenue": 100000,
+			"isConsolidated": true,
+			"subsidiaries": [
+				{
+					"address": "Village Vero Post office Chakbhoun Teh/Dist Chakwal",
+					"id": "c8133fb7-0f62-44e2-85ee-e0247b44862f",
+					"name": "Usama Ali"
+				},
+				{
+					"address": "Village Vero Post office Chakbhoun Teh/Dist Chakwal",
+					"id": "372ea07a-e851-44a1-9dda-1eb66449484e",
+					"name": "XYZ"
+				}
+			]
+		},
+		"descriptionOfPracticesPolicies": {
+			"c2_accountable_role_or_person": "CEO",
+			"c2_monitoring_targets_description": "This is our target",
+			"c2_sustainability_practice_description": "This is description of practices and policies",
+			"isC2Confidential": false,
+			"reportingYear": "2025"
+		},
+		"sustainabilityInitiatives": {
+			"arePracticesPubliclyAvailable": true,
+			"hasSustainabilityPractices": true,
+			"isB2Confidential": false,
+			"policiesHaveTargets": true,
+			"reportingYear": "2025",
+			"selectedSustainabilityIssueValues": [
+				"vsme:WaterAndMarineResourcesMember",
+				"vsme:CircularEconomyMember",
+				"vsme:ClimateChangeMember",
+				"vsme:PollutionMember"
+			]
+		}
+	},
+	"formGovernance": {
+		"boardComposition": {
+			"femaleMembers": 4,
+			"isC9Confidential": false,
+			"maleMembers": 6,
+			"otherMembers": 0,
+			"reportingYear": "2025",
+			"totalMembers": 10
+		},
+		"finesPenalties": {
+			"corruptionFinesDescription": "During the reporting period, the company received one fine of NOK 1,000 related to a violation of applicable anti-corruption and anti-bribery regulations. The incident was assessed as isolated and did not indicate systemic weaknesses in the company's compliance framework. Following the incident, the company reviewed its internal controls, reinforced employee awareness through additional compliance training, and strengthened monitoring procedures to reduce the likelihood of similar occurrences in the future. The company remains committed to maintaining high standards of ethical conduct and compliance with all applicable anti-corruption and anti-bribery laws.",
+			"currency": "NOK",
+			"hasCorruptionFines": true,
+			"numberOfConvictions": 1,
+			"reportingYear": "2025",
+			"totalFines": 1000
+		},
+		"sectorInvolvement": {
+			"coalRevenue": 100000,
+			"euBenchmarksExclusion": true,
+			"isC8Confidential": false,
+			"pabCoalThreshold": true,
+			"pabElectricityThreshold": false,
+			"pabGasThreshold": false,
+			"pabOilThreshold": true,
+			"reportingYear": "2025"
+		}
+	},
+	"formSocial": {
+		"additionalWorkforce": {
+			"contractWorkers": 20,
+			"femaleManagers": 2,
+			"maleManagers": 10,
+			"managementGenderRatio": 5,
+			"reportingYear": "2025",
+			"selfEmployedWorkers": 10
+		},
+		"compensationCollective": {
+			"collectiveBargainingAgreement": 5,
+			"collectiveBargainingShare": 0.5,
+			"genderPayGap": 0,
+			"hourlyPayFemale": 10,
+			"hourlyPayMale": 10,
+			"isB10Confidential": false,
+			"minimumWageLiability": true,
+			"reportingYear": "2025",
+			"trainingHoursFemale": 40,
+			"trainingHoursMale": 40
+		},
+		"healthSafety": {
+			"anyAdditionalInfo": "Health and safety data has been collected through internal incident reporting systems, workplace inspections, and occupational health and safety records for the reporting period. The organization is committed to maintaining a safe working environment through regular risk assessments, employee safety training, and compliance with applicable health and safety regulations. Reported figures include work-related incidents, injuries, and safety initiatives where applicable. The data has been reviewed for accuracy, and no significant changes to the reporting methodology occurred during the reporting period unless otherwise disclosed. Any estimates used were based on the best available internal records and reasonable assumptions.",
+			"deceased": 1,
+			"hmsTraining": 20,
+			"isB9Confidential": false,
+			"knowExactHoursWorked": true,
+			"rateOfWorkAccidents": 7.5,
+			"reportingYear": "2025",
+			"sicknessAbsencePercentage": 10,
+			"totalHoursWorked": 80000,
+			"workAccidents": 3
+		},
+		"humanRightsPolicies": {
+			"accidentPreventionPolicy": true,
+			"childLaborPolicy": true,
+			"discriminationPolicy": true,
+			"forcedLaborPolicy": true,
+			"hasCodeOfConduct": true,
+			"hasComplaintsHandlingMechanism": false,
+			"hasOtherPolicies": false,
+			"humanTraffickingPolicy": true,
+			"otherPolicies": "",
+			"reportingYear": "2025"
+		},
+		"seriousHumanRightsIncidents": {
+			"childLabor": true,
+			"childLaborMeasures": "testing ",
+			"discrimination": false,
+			"discriminationMeasures": "",
+			"forcedLabor": false,
+			"forcedLaborMeasures": "",
+			"hasValueChainIncidents": false,
+			"humanTrafficking": false,
+			"humanTraffickingMeasures": "",
+			"isC7Confidential": false,
+			"descriptionOfActionsTaken": "we taken this action against above issues",
+			"other": false,
+			"otherMeasures": "",
+			"reportingYear": "2025",
+			"valueChainIncidentsDescription": ""
+		},
+		"workforce": {
+			"anyAdditionalInfo": "ffggrt rgtrf grfrfhb ",
+			"confidentialAreas": [],
+			"employeeTurnoverRate": 0.1818,
+			"employeesAtEnd": 10,
+			"employeesAtStart": 12,
+			"employeesLeft": 2,
+			"employeesPerCountry": [
+				{
+					"country": "NO",
+					"id": "fb8b5418-f786-45b8-ad4e-3c52cee10018",
+					"numberOfEmployees": 10
+				}
+			],
+			"isB8Confidential": false,
+			"men": 5,
+			"notReported": 0,
+			"other": 1,
+			"permanentContractEmployees": 10,
+			"reportingYear": "2025",
+			"temporaryContractEmployees": 0,
+			"women": 4
+		}
+	},
+	"organization": {
+		"name": "SCOPE GROUP AS",
+		"orgNumber": "925446955"
+	},
+	"targets": {
+		"baseYear": 2025,
+		"baseYearEmissions": 348.99,
+		"hasScopeSpecificTargets": {
+			"scope1": false,
+			"scope2": false,
+			"scope3": false
+		},
+		"longTermTargetReduction": 85,
+		"longTermTargetYear": 2040,
+		"projections": [
+			{
+				"isBaseYear": true,
+				"isLongTermTargetYear": false,
+				"isTargetYear": false,
+				"scope1": 0.25,
+				"scope2": 345.18,
+				"scope3": 3.56,
+				"total": 348.99,
+				"year": 2025
+			},
+			{
+				"isBaseYear": false,
+				"isLongTermTargetYear": false,
+				"isTargetYear": false,
+				"scope1": 0.23,
+				"scope2": 311.66,
+				"scope3": 3.21,
+				"total": 315.1,
+				"year": 2026
+			},
+			{
+				"isBaseYear": false,
+				"isLongTermTargetYear": false,
+				"isTargetYear": false,
+				"scope1": 0.2,
+				"scope2": 281.39,
+				"scope3": 2.9,
+				"total": 284.49,
+				"year": 2027
+			},
+			{
+				"isBaseYear": false,
+				"isLongTermTargetYear": false,
+				"isTargetYear": false,
+				"scope1": 0.18,
+				"scope2": 254.06,
+				"scope3": 2.62,
+				"total": 256.86,
+				"year": 2028
+			},
+			{
+				"isBaseYear": false,
+				"isLongTermTargetYear": false,
+				"isTargetYear": false,
+				"scope1": 0.17,
+				"scope2": 229.39,
+				"scope3": 2.37,
+				"total": 231.92,
+				"year": 2029
+			},
+			{
+				"isBaseYear": false,
+				"isLongTermTargetYear": false,
+				"isTargetYear": true,
+				"scope1": 0.15,
+				"scope2": 207.11,
+				"scope3": 2.14,
+				"total": 209.39,
+				"year": 2030
+			},
+			{
+				"isBaseYear": false,
+				"isLongTermTargetYear": false,
+				"isTargetYear": false,
+				"scope1": 0.13,
+				"scope2": 180.3,
+				"scope3": 1.86,
+				"total": 182.29,
+				"year": 2031
+			},
+			{
+				"isBaseYear": false,
+				"isLongTermTargetYear": false,
+				"isTargetYear": false,
+				"scope1": 0.11,
+				"scope2": 156.96,
+				"scope3": 1.62,
+				"total": 158.69,
+				"year": 2032
+			},
+			{
+				"isBaseYear": false,
+				"isLongTermTargetYear": false,
+				"isTargetYear": false,
+				"scope1": 0.1,
+				"scope2": 136.64,
+				"scope3": 1.41,
+				"total": 138.15,
+				"year": 2033
+			},
+			{
+				"isBaseYear": false,
+				"isLongTermTargetYear": false,
+				"isTargetYear": false,
+				"scope1": 0.09,
+				"scope2": 118.95,
+				"scope3": 1.23,
+				"total": 120.27,
+				"year": 2034
+			},
+			{
+				"isBaseYear": false,
+				"isLongTermTargetYear": false,
+				"isTargetYear": false,
+				"scope1": 0.07,
+				"scope2": 103.55,
+				"scope3": 1.07,
+				"total": 104.7,
+				"year": 2035
+			},
+			{
+				"isBaseYear": false,
+				"isLongTermTargetYear": false,
+				"isTargetYear": false,
+				"scope1": 0.07,
+				"scope2": 90.15,
+				"scope3": 0.93,
+				"total": 91.14,
+				"year": 2036
+			},
+			{
+				"isBaseYear": false,
+				"isLongTermTargetYear": false,
+				"isTargetYear": false,
+				"scope1": 0.06,
+				"scope2": 78.48,
+				"scope3": 0.81,
+				"total": 79.35,
+				"year": 2037
+			},
+			{
+				"isBaseYear": false,
+				"isLongTermTargetYear": false,
+				"isTargetYear": false,
+				"scope1": 0.05,
+				"scope2": 68.32,
+				"scope3": 0.7,
+				"total": 69.07,
+				"year": 2038
+			},
+			{
+				"isBaseYear": false,
+				"isLongTermTargetYear": false,
+				"isTargetYear": false,
+				"scope1": 0.04,
+				"scope2": 59.48,
+				"scope3": 0.61,
+				"total": 60.13,
+				"year": 2039
+			},
+			{
+				"isBaseYear": false,
+				"isLongTermTargetYear": true,
+				"isTargetYear": false,
+				"scope1": 0.04,
+				"scope2": 51.78,
+				"scope3": 0.53,
+				"total": 52.35,
+				"year": 2040
+			}
+		],
+		"climateTransitionPlanDescription": "The morning sun shone brightly over the quiet village as people began their daily routines. Children walked to school, farmers worked in their fields, and birds sang in the trees. A gentle breeze moved through the green grass, making the entire landscape feel peaceful and refreshing. It was a perfect day to enjoy nature, spend time with family, and appreciate the simple pleasures of life.",
+		"climateTransitionPlanStatus":true,
+		"keyActionsToReachTargets":"The morning sun shone brightly over the quiet village as people began their daily routines. Children walked to school, farmers worked in their fields, and birds sang in the trees.",
+		"targetReduction": 40,
+		"targetYear": 2030
+	}
+}

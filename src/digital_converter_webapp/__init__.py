@@ -49,11 +49,14 @@ from mireport.xlsx_template_reader.processor import (
 )
 
 from .blueprints import convert_bp
+from .routes.convex_routes import convex_bp
 from .migration import (
     MIGRATION_WORKING,
     MigrationOutcome,
     checkMigration,
 )
+
+from mireport.convex_payload_reader import build_report_from_convex_payload
 
 ENABLE_CAPTCHA = False
 ENABLE_MIGRATION = False
@@ -147,6 +150,7 @@ def create_app(test_config: Mapping[str, Any] | None = None) -> Flask:
 
     # app looks to be working, install routes
     app.register_blueprint(convert_bp, url_prefix=app.config.get("PREFIX", "/"))
+    app.register_blueprint(convex_bp, url_prefix=app.config.get("PREFIX", "/"))
 
     # Discover all the taxonomy packages up front
     taxonomyPackageList = ArelleReportProcessor.getTaxonomyPackagesFromDir(
@@ -565,6 +569,89 @@ def doConversion(conversion: dict, id: str) -> ConversionResults:
 
     return resultBuilder.build()
 
+
+def _as_bool(value: Any, default: bool) -> bool:
+    """Convert value to boolean."""
+    if value is None:
+        return default
+    if isinstance(value, bool):
+        return value
+    return str(value).strip().lower() in {"1", "true", "yes", "on"}
+
+def doJsonConversion(payload: dict, conversion: dict, id: str) -> ConversionResults:
+    """Convert JSON payload (with XBRL facts) to Inline XBRL report."""
+    resultBuilder = ConversionResultsBuilder(conversionId=id)
+
+    #print(f"\n\n\ndoJsonConversion: {payload=}, {conversion=}, {id=}")
+
+    #print(f"\n\ndoJsonConversion: {resultBuilder=}")
+
+    try:
+        with resultBuilder.processingContext(f"JSON Conversion {id}") as pc:
+            pc.mark("Extracting data from JSON payload")
+
+            
+
+            report = build_report_from_convex_payload(payload, resultBuilder, VSME_DEFAULTS)
+            if not report.hasFacts:
+                resultBuilder.addMessage(
+                    "No facts found in payload-derived report. Stopping here.",
+                    Severity.ERROR,
+                    MessageType.Conversion,
+                )
+                return resultBuilder.build()
+
+            pc.mark(
+                "Generating Inline Report",
+                additionalInfo=f"({report.factCount} facts to include)",
+            )
+            report_package = report.getInlineReportPackage()
+            conversion["zip"] = report_package
+            resultBuilder.addMessage(
+                f"Inline XBRL report {report_package} created (containing {report.factCount} facts)",
+                Severity.INFO,
+                MessageType.Conversion,
+            )
+
+            options = payload.get("options", {})
+            if not isinstance(options, dict):
+                options = {}
+
+            validate = _as_bool(options.get("validate"), True)
+            generate_viewer = _as_bool(options.get("generateViewer"), False)
+            generate_xbrl_json = _as_bool(options.get("generateXbrlJson"), False)
+
+            if validate:
+                pc.mark(
+                    "Validating Inline Report",
+                    additionalInfo=f"Using Arelle (XBRL Certified Software™) [{ARELLE_VERSION_INFORMATION}]",
+                )
+                arelle_results = getArelle().validateReportPackage(report_package)
+                resultBuilder.addMessages(arelle_results.messages)
+
+            if generate_viewer:
+                pc.mark("Generating Inline Viewer")
+                viewer_results = getArelle().generateInlineViewer(report_package)
+                resultBuilder.addMessages(viewer_results.messages)
+                if viewer_results.has_viewer:
+                    conversion["viewer"] = viewer_results.viewer
+
+            if generate_xbrl_json:
+                pc.mark("Generating XBRL-JSON")
+                json_results = getArelle().generateXBRLJson(report_package)
+                resultBuilder.addMessages(json_results.messages)
+                if json_results.has_json:
+                    conversion["json"] = json_results.xBRL_JSON
+    except Exception as e:
+        message = next(iter(e.args), str(e))
+        resultBuilder.addMessage(
+            f"Exception encountered during JSON conversion. {message}",
+            Severity.ERROR,
+            MessageType.Conversion,
+        )
+        L.exception("Exception encountered during JSON conversion", exc_info=e)
+
+    return resultBuilder.build()
 
 @convert_bp.route("/downloadFile/<string:id>/<string:ftype>/", methods=["GET", "HEAD"])
 def downloadFile(id: str, ftype: str) -> Response:
