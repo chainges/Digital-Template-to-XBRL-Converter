@@ -11,12 +11,11 @@ dependencies = [
     "aoix@git+https://code.blinkace.com/xbrl/aoix.git@strr/dev",
     "arelle-release>=2.39.6",
     "babel>=2.17.0",
-    "flask-session",
+    "convex",
     "flask",
+    "google-cloud-storage",
     "ixbrl-viewer>=1.4.90",
-    "mammoth",
     "msgpack",
-    "openpyxl",
     "pillow>=11.3.0",
     "python-dateutil",
     "python-dotenv>=1.0.1",
@@ -40,7 +39,7 @@ build-backend = "hatchling.build"
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/mireport", "src/digital_converter_webapp"]
+packages = ["src/mireport", "src/digital_converter_webapp", "src/services"]
 
 [project.optional-dependencies]
 dev = [
@@ -53,18 +52,8 @@ dev = [
     "ruff>=0.12.2",
     "safety>=3.2.9",
     "types-lxml",
-    "types-openpyxl",
     "types-python-dateutil",
     "types-Werkzeug",
-]
-
-redis = [
-    "flask-rq>=0.3.3",
-    "flask-session[redis]",
-]
-
-migration = [
-    "migration_tool@git+https://github.com/EFRAG-EU/Digital-Template-Data-Migration-Tool.git@b931702",
 ]
 
 

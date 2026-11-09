@@ -31,7 +31,7 @@ from mireport.taxonomy import (
     listTaxonomies,
 )
 from mireport.taxonomy_checker import TaxonomyChecker
-from mireport.xlsx_template_reader.processor import VSME_DEFAULTS
+from mireport.data.disclosures import VSME_DEFAULTS
 
 
 class Mismatch(NamedTuple):
