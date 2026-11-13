@@ -5,6 +5,7 @@ import time
 import zipfile
 from collections import defaultdict
 from datetime import date, datetime, timezone
+from functools import lru_cache
 from io import BytesIO
 from itertools import count
 from typing import TYPE_CHECKING
@@ -28,6 +29,7 @@ from mireport.localise import (
     get_locale_from_str,
     group_symbol,
 )
+from mireport.performance import timed_call, timed_stage
 from mireport.report.disclosure_layout import DisclosureLayoutStrategy
 from mireport.report.fact import Fact, Symbol, tidyTdValue
 from mireport.report.factbuilder import FactBuilder
@@ -52,6 +54,26 @@ INLINE_REPORT_PACKAGE_JSON = """{
         "documentType": "https://xbrl.org/report-package/2023/xbri"
     }
 }""".encode("UTF-8")
+
+
+@lru_cache(maxsize=2)
+def _template_environment(debug: bool) -> Environment:
+    env = Environment(
+        loader=PackageLoader("mireport.report", "inline_report_templates"),
+        keep_trailing_newline=True,
+        trim_blocks=True,
+        lstrip_blocks=True,
+        undefined=StrictUndefined if debug else Undefined,
+    )
+    env.globals.update(
+        {
+            PresentationStyle.__name__: PresentationStyle,
+            TableStyle.__name__: TableStyle,
+            "now_utc": lambda: datetime.now(timezone.utc),
+        }
+    )
+    env.filters.update({"tidyTdValue": tidyTdValue, "cssmin": cssmin})
+    return env
 
 
 class InlineReport:
@@ -339,35 +361,13 @@ class InlineReport:
 
         layout = DisclosureLayoutStrategy.for_entry_point(self._taxonomy.entryPoint)
         rl = ReportLayoutOrganiser(self._taxonomy, self)
-        sections = rl.organise(layout)
+        sections = timed_call("report_layout", rl.organise, layout)
         toc = layout.build_toc(sections, lang)
 
-        env = Environment(
-            loader=PackageLoader("mireport.report", "inline_report_templates"),
-            keep_trailing_newline=True,
-            trim_blocks=True,
-            lstrip_blocks=True,
-            undefined=StrictUndefined if L.isEnabledFor(logging.DEBUG) else Undefined,
+        env = _template_environment(L.isEnabledFor(logging.DEBUG))
+        template = timed_call(
+            "template_load", env.get_template, "inline-report-presentation.html.jinja"
         )
-        env.globals.update(
-            {
-                PresentationStyle.__name__: PresentationStyle,
-                TableStyle.__name__: TableStyle,
-                "now_utc": lambda: datetime.now(timezone.utc),
-                "labelLanguage": label_language,
-                "labelQNameFallback": label_language is None,
-                "label_overrides_by_concept": self._labelOverrides,
-                "section_label": lambda s: layout.section_label(s, lang),
-                "page_group_key": lambda s: layout.page_group_key(s, lang),
-            }
-        )
-        env.filters.update(
-            {
-                "tidyTdValue": tidyTdValue,
-                "cssmin": cssmin,
-            }
-        )
-        template = env.get_template("inline-report-presentation.html.jinja")
         fn_manager = FootnoteManager(self._footnotes).register_refs(
             sections, self._footnotesByGroup
         )
@@ -383,7 +383,14 @@ class InlineReport:
             else ""
         )
 
-        html_content = template.render(
+        html_content = timed_call(
+            "template_render",
+            template.render,
+            labelLanguage=label_language,
+            labelQNameFallback=label_language is None,
+            label_overrides_by_concept=self._labelOverrides,
+            section_label=lambda section: layout.section_label(section, lang),
+            page_group_key=lambda section: layout.page_group_key(section, lang),
             aoix={
                 "defaults": self.getDefaultAspectsForAoix(),
                 "periods": self.getPeriodsForAoix(),
@@ -425,7 +432,7 @@ class InlineReport:
                 "http://www.xbrl.org/inlineXBRL/transformation/2022-02-16",
                 self.taxonomy.dimensionContainer.value,
             )
-            ixbrl_content = parser.parse(html_content).strip()
+            ixbrl_content = timed_call("aoix_parse", parser.parse, html_content).strip()
             self._generatedReport = ixbrl_content
             elapsed = time.perf_counter_ns() - start_time
             L.info(
@@ -450,7 +457,7 @@ class InlineReport:
         top_level = f"{self._getSafeEntityName()}_{self.defaultPeriod.end.year}"
         report = self.getInlineReport()
         content = BytesIO()
-        with zipfile.ZipFile(
+        with timed_stage("zip_packaging"), zipfile.ZipFile(
             content, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=6
         ) as zf:
             zf.writestr(

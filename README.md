@@ -72,6 +72,36 @@ Follow [the user instructions](#set-up-for-deploying) but make the distribution 
 python -m flask --app digital_converter_webapp run --debug
 ```
 
+### Measure report generation
+
+The `/convex` endpoint logs `performance` records at INFO level. Group records
+by `request_id` and compare `duration_ms` for `convex_fetch`, `payload_mapping`,
+`report_build`, `report_layout`, `template_load`, `template_render`, `aoix_parse`,
+`zip_packaging`, `validation`, `storage_init`, `storage_upload`, and `request_total`.
+`arelle_lock_wait` measures time waiting for the process-wide Arelle lock;
+`arelle_execution` measures the work while holding it. Stage times are nested
+and must not all be added together. The identifier contains no report data.
+
+To benchmark the local mapping and rendering pipeline without network calls:
+
+```powershell
+python scripts/benchmark-report.py tests/data/TestFile.json --iterations 10
+```
+
+This benchmark does **not** validate unless requested, and does not include
+Convex or storage. For full validation using locally installed taxonomy packages:
+
+```powershell
+python scripts/benchmark-report.py tests/data/TestFile.json --validate --taxonomy-package-dir C:/path/to/taxonomies
+```
+
+Alternatively, add `--validate --online` to allow network taxonomy resolution.
+Check `validation_errors` in the output; offline packages must include all
+required taxonomy dependencies and should be checked against online results.
+Compare runs on the same host and configuration. A p95 from only ten runs is
+indicative, not a stable latency target. Normal `/convex` reports continue to
+be validated before they are returned.
+
 ### Dump the named ranges from an Excel file (for debugging/testing purposes)
 
 ```bash

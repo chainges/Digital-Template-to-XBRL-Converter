@@ -1,7 +1,10 @@
 
+from concurrent.futures import ThreadPoolExecutor
+
 from mireport import loadBuiltInTaxonomyJSON
 from mireport.conversionresults import ConversionResultsBuilder
 from mireport.convex_payload_reader import build_report_from_convex_payload
+from mireport.report.inlinereport import _template_environment
 
 loadBuiltInTaxonomyJSON()
 
@@ -99,3 +102,43 @@ def test_reader_accepts_legacy_typed_axis_material_dimensions() -> None:
 
     assert report.factCount == 1
     assert results.conversionSuccessful
+
+
+def test_cached_templates_keep_concurrent_report_contexts_isolated() -> None:
+    def render(name: str, label: str) -> str:
+        payload = _build_payload()
+        payload["meta"]["entity"]["name"] = name
+        payload["facts"] = [
+            {
+                "concept": "vsme:AmountOfEmissionToAir",
+                "value": "123.45",
+                "period": "2025-01-01T00:00:00/2025-12-31T00:00:00",
+                "dimensions": [
+                    {
+                        "dimension": "vsme:TypeOfPollutantAxis",
+                        "member": "vsme:AnthraceneMember",
+                    }
+                ],
+            }
+        ]
+        report = build_report_from_convex_payload(
+            payload, ConversionResultsBuilder("test"), {}
+        )
+        report.setLabelOverrides({str(report.facts[0].concept.qname): label})
+        return report.getInlineReport().fileContent.decode("utf-8")
+
+    assert _template_environment(False) is _template_environment(False)
+    assert _template_environment(False) is not _template_environment(True)
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        first = pool.submit(render, "FirstCompanyUnique", "FirstLabelUnique")
+        second = pool.submit(render, "SecondCompanyUnique", "SecondLabelUnique")
+        first_html, second_html = first.result(), second.result()
+
+    assert "FirstCompanyUnique" in first_html
+    assert "FirstLabelUnique" in first_html
+    assert "SecondCompanyUnique" not in first_html
+    assert "SecondLabelUnique" not in first_html
+    assert "SecondCompanyUnique" in second_html
+    assert "SecondLabelUnique" in second_html
+    assert "FirstCompanyUnique" not in second_html
+    assert "FirstLabelUnique" not in second_html

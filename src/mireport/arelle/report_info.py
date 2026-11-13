@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 import threading
 import zipfile
+from contextlib import contextmanager
 from importlib.metadata import PackageNotFoundError, metadata, version
 from io import BytesIO
 from pathlib import Path, PurePath
@@ -21,12 +22,24 @@ from mireport.arelle.support import (
     ArelleVersionHolder,
 )
 from mireport.filesupport import FilelikeAndFileName
+from mireport.performance import timed_stage
 from mireport.report.inlinereport import UNCONSTRAINED_REPORT_PACKAGE_JSON
 from mireport.version import VersionInformationTuple
 
 BIG_ARELLE_LOCK = threading.Lock()
 
 L = logging.getLogger(__name__)
+
+
+@contextmanager
+def _timed_arelle_lock():
+    with timed_stage("arelle_lock_wait"):
+        BIG_ARELLE_LOCK.acquire()
+    try:
+        with timed_stage("arelle_execution"):
+            yield
+    finally:
+        BIG_ARELLE_LOCK.release()
 
 
 class ArelleReportProcessor:
@@ -80,7 +93,7 @@ class ArelleReportProcessor:
         # So we use the BIG_ARELLE_LOCK to make sure we only call in to Arelle
         # one thread at time, thus making it safe.
         #
-        with BIG_ARELLE_LOCK:
+        with _timed_arelle_lock():
             try:
                 try:
                     # These survive between calls to Session() so you end up

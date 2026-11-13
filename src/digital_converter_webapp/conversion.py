@@ -7,14 +7,15 @@ from mireport.arelle.report_info import (
     ARELLE_VERSION_INFORMATION,
     ArelleReportProcessor,
 )
-from mireport.convex_payload_reader import build_report_from_convex_payload
 from mireport.conversionresults import (
     ConversionResults,
     ConversionResultsBuilder,
     MessageType,
     Severity,
 )
+from mireport.convex_payload_reader import build_report_from_convex_payload
 from mireport.data.disclosures import VSME_DEFAULTS
+from mireport.performance import timed_stage
 
 L = logging.getLogger(__name__)
 
@@ -45,9 +46,10 @@ def doJsonConversion(payload: dict, conversion: dict, id: str) -> ConversionResu
         with resultBuilder.processingContext(f"JSON Conversion {id}") as pc:
             pc.mark("Extracting data from JSON payload")
 
-            report = build_report_from_convex_payload(
-                payload, resultBuilder, VSME_DEFAULTS
-            )
+            with timed_stage("report_build"):
+                report = build_report_from_convex_payload(
+                    payload, resultBuilder, VSME_DEFAULTS
+                )
             if not report.hasFacts:
                 resultBuilder.addMessage(
                     "No facts found in payload-derived report. Stopping here.",
@@ -60,7 +62,8 @@ def doJsonConversion(payload: dict, conversion: dict, id: str) -> ConversionResu
                 "Generating Inline Report",
                 additionalInfo=f"({report.factCount} facts to include)",
             )
-            report_package = report.getInlineReportPackage()
+            with timed_stage("report_package"):
+                report_package = report.getInlineReportPackage()
             conversion["zip"] = report_package
             resultBuilder.addMessage(
                 f"Inline XBRL report {report_package} created (containing {report.factCount} facts)",
@@ -81,7 +84,8 @@ def doJsonConversion(payload: dict, conversion: dict, id: str) -> ConversionResu
                     "Validating Inline Report",
                     additionalInfo=f"Using Arelle (XBRL Certified Software™) [{ARELLE_VERSION_INFORMATION}]",
                 )
-                arelle_results = getArelle().validateReportPackage(report_package)
+                with timed_stage("validation"):
+                    arelle_results = getArelle().validateReportPackage(report_package)
                 resultBuilder.addMessages(arelle_results.messages)
 
             if generate_viewer:

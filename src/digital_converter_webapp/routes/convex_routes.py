@@ -8,6 +8,7 @@ from flask import Blueprint, current_app, jsonify, request
 from digital_converter_webapp.conversion import doJsonConversion
 from mireport.filesupport import FilelikeAndFileName
 from mireport.JsonToXBRL.mapper import map_json_to_xbrl
+from mireport.performance import timed_request, timed_stage
 from services.storage_service import GCSStorageService
 
 L = logging.getLogger(__name__)
@@ -40,6 +41,11 @@ def health():
 
 @convex_bp.route("/convex", methods=["GET", "POST"])
 def generate_xbrl_from_convex():
+    with timed_request():
+        return _generate_xbrl_from_convex()
+
+
+def _generate_xbrl_from_convex():
     org_id = request.args.get("orgId", "").strip()
     reportId = request.args.get("reportId", "").strip()
     convex_url = current_app.config.get("CONVEX_URL") or os.getenv("CONVEX_URL")
@@ -54,17 +60,22 @@ def generate_xbrl_from_convex():
 
     try:
         reporting_year = _parse_reporting_year(request.args.get("reportingYear"))
+        
+        print(f"\n\nOrg ID: {org_id}, Report ID: {reportId}, Reporting year: {reporting_year}")
 
-        convex_data = client.action(
-            "report:getCompleteReportData",
-            {"orgId": org_id, "reportingYear": reporting_year},
-        )
+        with timed_stage("convex_fetch"):
+            convex_data = client.action(
+                "report:getCompleteReportData",
+                {"orgId": org_id, "reportingYear": reporting_year},
+            )
         if not convex_data:
             return jsonify({"error": "No report data found."}), 404
         
-        client.mutation("reportMutations:updateProgress", {"reportId": reportId, "status": "processing"})
+        with timed_stage("convex_progress_processing"):
+            client.mutation("reportMutations:updateProgress", {"reportId": reportId, "status": "processing"})
 
-        mapped_payload = map_json_to_xbrl(convex_data)
+        with timed_stage("payload_mapping"):
+            mapped_payload = map_json_to_xbrl(convex_data)
 
         conversion_id = (
             f"xbrl-{org_id}-{reporting_year}-"
@@ -72,7 +83,11 @@ def generate_xbrl_from_convex():
         )
         conversion: dict = {"id": conversion_id, "source": "convex"}
 
+        #with timed_stage("conversion"):
         results = doJsonConversion(mapped_payload, conversion, conversion_id)
+            
+        
+        print("\n\n",results.conversionSuccessful,"\n\n", results.toDict(), "\n\n")
 
         if not results.conversionSuccessful:
             return jsonify(
@@ -88,20 +103,30 @@ def generate_xbrl_from_convex():
 
         xbrl_package = FilelikeAndFileName.from_tuple(conversion["zip"])
         
-        client.mutation("reportMutations:updateProgress", {"reportId": reportId, "status": "uploading"})
+        with timed_stage("convex_progress_uploading"):
+            client.mutation("reportMutations:updateProgress", {"reportId": reportId, "status": "uploading"})
 
         object_key = f"reports/{org_id}/{reporting_year}/{conversion_id}.zip"
-        storage = get_storage_service()
-        upload_result = storage.upload_bytes(
-            file_content=xbrl_package.fileContent,
-            destination_blob_name=object_key,
-            content_type="application/zip",
-        )
-        download_url = storage.generate_signed_url(
-            object_key=object_key, expiration_minutes=60
-        )
+        with timed_stage("storage_init"):
+            storage = get_storage_service()
+        with timed_stage("storage_upload"):
+            upload_result = storage.upload_bytes(
+                file_content=xbrl_package.fileContent,
+                destination_blob_name=object_key,
+                content_type="application/zip",
+            )
+        with timed_stage("storage_signed_url"):
+            download_url = storage.generate_signed_url(
+                object_key=object_key, expiration_minutes=60
+            )
+            
+        returned_Result = {
+            **upload_result,
+            "downloadUrl": download_url,
+        }
 
-        client.mutation("reportMutations:completeReport", {"reportId": reportId, "storage":upload_result})
+        with timed_stage("convex_complete"):
+            client.mutation("reportMutations:completeReport", {"reportId": reportId, "storage": returned_Result})
         return jsonify(
             {
                 "id": conversion_id,
@@ -116,9 +141,11 @@ def generate_xbrl_from_convex():
 
 
     except ValueError as e:
-        client.mutation("reportMutations:updateProgress", {"reportId": reportId, "status": "failed"})
+        with timed_stage("convex_progress_failed"):
+            client.mutation("reportMutations:updateProgress", {"reportId": reportId, "status": "failed"})
         return jsonify({"error": str(e)}), 400
     except Exception:
-        client.mutation("reportMutations:updateProgress", {"reportId": reportId, "status": "failed"})
+        with timed_stage("convex_progress_failed"):
+            client.mutation("reportMutations:updateProgress", {"reportId": reportId, "status": "failed"})
         L.exception("Exception during XBRL generation from Convex")
         return jsonify({"error": "Failed to generate XBRL report."}), 500
