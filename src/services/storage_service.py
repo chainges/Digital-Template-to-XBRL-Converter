@@ -1,4 +1,7 @@
 from google.cloud import storage
+import google.auth
+from google.auth.transport.requests import Request
+import os
 from datetime import timedelta
 from typing import Optional
 
@@ -49,16 +52,15 @@ class GCSStorageService:
             "fileName": destination_blob_name.split("/")[-1]
         }
 
-    def generate_signed_url(
-        self,
-        object_key: str,
-        expiration_minutes: int = 60
-    ) -> str:
-
-        blob = self.bucket.blob(object_key)
-
-        return blob.generate_signed_url(
+    def generate_signed_url(self, object_key: str, expiration_minutes: int = 60) -> str:
+        credentials, _ = google.auth.default(
+            scopes=["https://www.googleapis.com/auth/cloud-platform"]
+        )
+        credentials.refresh(Request())
+        return self.bucket.blob(object_key).generate_signed_url(
             version="v4",
             expiration=timedelta(minutes=expiration_minutes),
-            method="GET"
+            method="GET",
+            service_account_email=os.environ["SIGNING_SERVICE_ACCOUNT"],
+            access_token=credentials.token,
         )
